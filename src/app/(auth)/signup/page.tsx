@@ -1,6 +1,13 @@
-import { signup } from "@/app/actions/auth";
+import { BgDeco } from "@/components/ui/BgDeco";
+import { TransitionLink } from "@/components/ui/TransitionLink";
+import { SignupFormClient } from "./SignupFormClient";
 
 export const metadata = { title: "회원가입" };
+
+const PIKACHU =
+  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png";
+const CHARMANDER =
+  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png";
 
 export default async function SignupPage({
   searchParams,
@@ -11,128 +18,124 @@ export default async function SignupPage({
 
   return (
     <main
-      className="min-h-screen flex items-center justify-center px-4"
+      className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
+        /* 🔥 불꽃 파이리 테마 — 주황-빨강 그라디언트 */
         background:
-          "radial-gradient(ellipse at 60% 40%, #ffe0b2 0%, #fff8f0 50%, #fff3e0 100%)",
+          "linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 25%, #FFAB76 55%, #FF5722 100%)",
       }}
     >
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-6">
-          <div className="relative inline-block">
-            <div
-              className="w-24 h-24 mx-auto rounded-full flex items-center justify-center shadow-lg"
-              style={{ background: "linear-gradient(135deg, #ffe0b2, #ffcc80)" }}
-            >
+      <BgDeco />
+
+      {/* ── 상단 중앙 홈 버튼 ── */}
+      <div style={{ position: "absolute", top: 20, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 20 }}>
+        <TransitionLink
+          href="/"
+          emoji="🔥"
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            padding: "8px 18px", borderRadius: 999,
+            background: "rgba(255,255,255,0.75)", backdropFilter: "blur(8px)",
+            border: "1.5px solid rgba(255,112,67,0.6)",
+            color: "#BF360C", fontSize: "0.82rem", fontWeight: 700,
+            textDecoration: "none", boxShadow: "0 2px 12px rgba(255,87,34,0.2)",
+            transition: "all 0.15s",
+          }}
+        >
+          ← 홈으로 돌아가기
+        </TransitionLink>
+      </div>
+
+      <div className="w-full max-w-sm relative" style={{ zIndex: 10 }}>
+        {/* ── 헤더: 파이리 메인, 피카츄 조역 ── */}
+        <div className="text-center mb-7">
+          {/* 테마 배지 */}
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black mb-4"
+            style={{
+              background: "linear-gradient(135deg, #FF5722, #BF360C)",
+              color: "#fff",
+              boxShadow: "0 2px 12px rgba(255,87,34,0.5)",
+            }}
+          >
+            🔥 불꽃 타입 회원가입
+          </div>
+
+          <div className="flex items-end justify-center gap-4 mb-4">
+            {/* 피카츄 — 조역 (작게) */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={PIKACHU}
+              alt="피카츄"
+              width={72}
+              height={72}
+              className="pk-float mb-1"
+              style={{
+                animationDuration: "3s",
+                animationDelay: "0.4s",
+                opacity: 0.7,
+                filter: "drop-shadow(0 6px 14px rgba(255,215,0,0.4))",
+              }}
+            />
+
+            {/* 중앙 텍스트 */}
+            <div className="pb-3 text-center">
+              <div className="text-2xl font-black" style={{ color: "#BF360C", lineHeight: 1.1 }}>
+                새로운 모험
+              </div>
+              <div
+                className="text-3xl font-black"
+                style={{ color: "#E64A19", lineHeight: 1.1, textShadow: "0 2px 8px rgba(255,87,34,0.3)" }}
+              >
+                시작! 🎉
+              </div>
+            </div>
+
+            {/* 파이리 — 메인 (크게) */}
+            <div className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"
+                src={CHARMANDER}
                 alt="파이리"
-                width={72}
-                height={72}
+                width={140}
+                height={140}
+                className="pk-float drop-shadow-2xl"
+                style={{
+                  animationDuration: "2.8s",
+                  animationDelay: "0.2s",
+                  filter: "drop-shadow(0 10px 28px rgba(255,87,34,0.65))",
+                }}
               />
+              {/* 불꽃 후광 */}
+              <span
+                className="absolute flame"
+                style={{
+                  top: -8, left: -10, fontSize: "1.8rem",
+                  filter: "drop-shadow(0 0 8px #FF5722)",
+                }}
+              >
+                🔥
+              </span>
             </div>
-            <span className="absolute -bottom-1 -right-1 text-xl flame">🔥</span>
           </div>
-          <h1 className="text-2xl font-black mt-3" style={{ color: "#e65100" }}>
-            새 트레이너 등록!
-          </h1>
-          <p className="text-sm mt-1" style={{ color: "#a1887f" }}>
-            파이리와 함께할 준비가 됐나요?
+
+          <p className="text-sm font-bold" style={{ color: "#7B2D00" }}>
+            🔥 파이리와 함께 불타는 여정을 시작해요
           </p>
         </div>
 
+        {/* ── 폼 카드 — 불꽃 테마 (주황 테두리) ── */}
         <div
-          className="bg-white rounded-3xl p-8 border"
+          className="rounded-3xl p-8 border-2"
           style={{
-            borderColor: "#ffcc80",
-            boxShadow: "0 8px 32px rgba(255,109,0,0.12)",
+            background: "rgba(255,255,255,0.92)",
+            backdropFilter: "blur(16px)",
+            borderColor: "#FF7043",
+            boxShadow: "0 8px 36px rgba(255,87,34,0.22), 0 2px 8px rgba(255,120,50,0.15)",
           }}
         >
-          {error && (
-            <div
-              className="mb-5 flex items-center gap-2 text-sm px-4 py-3 rounded-2xl"
-              style={{
-                background: "#fff3e0",
-                color: "#e65100",
-                border: "1px solid #ffcc80",
-              }}
-            >
-              <span>⚠️</span>
-              <span>{error}</span>
-            </div>
-          )}
-
-          <form action={signup} className="space-y-4">
-            <div>
-              <label
-                className="block text-xs font-black mb-1.5 uppercase tracking-wide"
-                style={{ color: "#ff6d00" }}
-              >
-                이메일
-              </label>
-              <input
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-                placeholder="trainer@pokemon.com"
-                className="w-full px-4 py-3 rounded-2xl text-sm focus:outline-none transition-all placeholder-orange-200"
-                style={{
-                  border: "2px solid #ffe0b2",
-                  background: "#fff8f0",
-                  color: "#3e2723",
-                }}
-              />
-            </div>
-            <div>
-              <label
-                className="block text-xs font-black mb-1.5 uppercase tracking-wide"
-                style={{ color: "#ff6d00" }}
-              >
-                비밀번호
-              </label>
-              <input
-                name="password"
-                type="password"
-                required
-                minLength={8}
-                autoComplete="new-password"
-                placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-2xl text-sm focus:outline-none transition-all placeholder-orange-200"
-                style={{
-                  border: "2px solid #ffe0b2",
-                  background: "#fff8f0",
-                  color: "#3e2723",
-                }}
-              />
-              <p className="mt-1.5 text-xs pl-1" style={{ color: "#bcaaa4" }}>
-                8자 이상 입력해주세요
-              </p>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3 rounded-2xl text-sm font-black text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] mt-1"
-              style={{
-                background: "linear-gradient(135deg, #ff6d00, #ff3d00)",
-                boxShadow: "0 4px 16px rgba(255,109,0,0.35)",
-              }}
-            >
-              🔥 모험 시작하기
-            </button>
-          </form>
+          <SignupFormClient serverError={error} />
         </div>
-
-        <p className="mt-5 text-center text-sm" style={{ color: "#a1887f" }}>
-          이미 트레이너인가요?{" "}
-          <a
-            href="/login"
-            className="font-black hover:underline"
-            style={{ color: "#ff6d00" }}
-          >
-            로그인
-          </a>
-        </p>
       </div>
     </main>
   );
