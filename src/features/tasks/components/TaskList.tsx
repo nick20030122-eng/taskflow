@@ -1,11 +1,5 @@
 import type { Task } from "@/types";
-
-const statusLabel: Record<string, string> = {
-  todo: "할 일",
-  in_progress: "진행 중",
-  done: "완료",
-  archived: "보관",
-};
+import { StatusSelect } from "./StatusSelect";
 
 const priorityLabel: Record<string, string> = {
   urgent: "긴급",
@@ -37,9 +31,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
           key={task.id}
           className="flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-lg"
         >
-          <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
-            {statusLabel[task.status]}
-          </span>
+          <StatusSelect taskId={task.id} currentStatus={task.status} />
           <span className="flex-1 text-sm text-gray-800">{task.title}</span>
           <span className={`text-xs font-medium ${priorityColor[task.priority]}`}>
             {priorityLabel[task.priority]}
