@@ -26,12 +26,21 @@
 ### 폴더 구조
 ```
 src/
-  app/           # 라우트·레이아웃·페이지 (Server Component 우선)
-  components/    # UI 컴포넌트 (재사용 가능한 것만)
-  lib/           # Supabase 클라이언트·유틸
-  types/         # TypeScript 타입 정의
+  app/
+    (auth)/login, signup
+    (dashboard)/tasks, teams, today
+    actions/           ← DB 접근 유일 경로 (Server Actions)
+  features/
+    tasks/             ← TaskCard, TaskList, TaskForm, TaskFilters
+    teams/             ← TeamCard, InviteModal
+    today/             ← TodayView, DueSoonBadge
+  components/ui/       ← Button, Modal, Badge, Skeleton (도메인 로직 없음)
+  lib/
+    supabase/          ← server.ts(SERVER ONLY), client.ts
+    validation/        ← taskSchema, memberSchema
+  types/               ← 공통 타입 (Task, Team, Member, Status, Priority)
 supabase/
-  migrations/    # SQL 마이그레이션 파일
+  migrations/          ← SQL 마이그레이션 파일
 ```
 
 ### 코딩 규칙
