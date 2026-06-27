@@ -15,17 +15,32 @@ export default async function DashboardLayout({
   if (!user) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b px-6 py-3 flex items-center justify-between">
-        <a href="/tasks" className="text-sm font-bold text-gray-900">
-          TaskFlow
+    <div className="min-h-screen" style={{ background: "#fff8f0" }}>
+      <header
+        className="sticky top-0 z-10 px-5 py-3 flex items-center justify-between border-b"
+        style={{
+          background: "linear-gradient(135deg, #ff6d00 0%, #ff3d00 100%)",
+          borderColor: "#ff3d00",
+        }}
+      >
+        <a href="/tasks" className="flex items-center gap-2">
+          <span className="text-xl flame">🔥</span>
+          <span className="text-base font-black text-white tracking-tight drop-shadow">
+            TaskFlow
+          </span>
         </a>
-        <div className="flex items-center gap-4">
-          <span className="text-xs text-gray-400">{user.email}</span>
+        <div className="flex items-center gap-3">
+          <span
+            className="text-xs font-medium px-3 py-1.5 rounded-full"
+            style={{ background: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.9)" }}
+          >
+            {user.email}
+          </span>
           <form action={logout}>
             <button
               type="submit"
-              className="text-xs text-gray-500 hover:text-gray-900"
+              className="text-xs font-bold transition-opacity hover:opacity-70"
+              style={{ color: "rgba(255,255,255,0.85)" }}
             >
               로그아웃
             </button>

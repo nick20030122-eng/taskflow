@@ -12,27 +12,47 @@ export default async function TasksPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // layout.tsx에서 미인증을 처리하지만 타입 안전성을 위해 재확인
   if (!user) redirect("/login");
 
   const team = await getMyTeam(user.id);
 
   if (!team) {
     return (
-      <div className="text-center py-16">
-        <p className="text-gray-500 text-sm mb-4">소속된 팀이 없습니다.</p>
-        <p className="text-gray-400 text-xs">팀 생성 기능은 다음 버전에서 제공됩니다.</p>
+      <div className="text-center py-20">
+        <div className="text-5xl mb-4">🏝️</div>
+        <p className="font-black text-lg mb-1" style={{ color: "#e65100" }}>
+          소속된 팀이 없어요
+        </p>
+        <p className="text-sm" style={{ color: "#a1887f" }}>
+          팀 생성 기능은 다음 버전에서 제공됩니다.
+        </p>
       </div>
     );
   }
 
   const tasks = await getMyTasks(team.id);
+  const doneCount = tasks.filter((t) => t.status === "done").length;
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900">{team.name} — 태스크</h1>
-        <p className="text-sm text-gray-400 mt-1">{tasks.length}개의 태스크</p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-black flex items-center gap-2" style={{ color: "#e65100" }}>
+            <span className="flame">🔥</span>
+            {team.name}
+          </h1>
+          <p className="text-xs mt-0.5" style={{ color: "#a1887f" }}>
+            총 {tasks.length}개 · 완료 {doneCount}개
+          </p>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"
+          alt="파이리"
+          width={56}
+          height={56}
+          className="opacity-80"
+        />
       </div>
 
       <CreateTaskForm teamId={team.id} />
