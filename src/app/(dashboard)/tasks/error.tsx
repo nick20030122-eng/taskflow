@@ -14,7 +14,7 @@ export default function TasksError({
         파이리가 당황했어요!
       </h2>
       <p className="text-sm mb-6" style={{ color: "#a1887f" }}>
-        {error.message || "예기치 않은 오류가 발생했어요."}
+        예기치 않은 오류가 발생했어요.
       </p>
       <button
         onClick={reset}

@@ -15,7 +15,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    redirect("/login?error=" + encodeURIComponent(error.message));
+    redirect("/login?error=" + encodeURIComponent("이메일 또는 비밀번호가 올바르지 않습니다."));
   }
 
   redirect("/tasks");
@@ -33,7 +33,7 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
-    redirect("/signup?error=" + encodeURIComponent(error.message));
+    redirect("/signup?error=" + encodeURIComponent("회원가입에 실패했습니다. 다시 시도해주세요."));
   }
 
   redirect("/tasks");
