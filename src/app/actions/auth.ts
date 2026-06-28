@@ -3,37 +3,45 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export async function login(formData: FormData) {
+type AuthState = { error?: string };
+
+export async function login(
+  _prevState: AuthState,
+  formData: FormData
+): Promise<AuthState> {
   const email = (formData.get("email") as string)?.trim();
   const password = formData.get("password") as string;
 
   if (!email || !password) {
-    redirect("/login?error=" + encodeURIComponent("이메일과 비밀번호를 입력해주세요."));
+    return { error: "이메일과 비밀번호를 입력해주세요." };
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    redirect("/login?error=" + encodeURIComponent("이메일 또는 비밀번호가 올바르지 않습니다."));
+    return { error: "이메일 또는 비밀번호가 올바르지 않습니다." };
   }
 
   redirect("/tasks");
 }
 
-export async function signup(formData: FormData) {
+export async function signup(
+  _prevState: AuthState,
+  formData: FormData
+): Promise<AuthState> {
   const email = (formData.get("email") as string)?.trim();
   const password = formData.get("password") as string;
 
   if (!email || !password) {
-    redirect("/signup?error=" + encodeURIComponent("이메일과 비밀번호를 입력해주세요."));
+    return { error: "이메일과 비밀번호를 입력해주세요." };
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
-    redirect("/signup?error=" + encodeURIComponent("회원가입에 실패했습니다. 다시 시도해주세요."));
+    return { error: "회원가입에 실패했습니다. 다시 시도해주세요." };
   }
 
   redirect("/tasks");

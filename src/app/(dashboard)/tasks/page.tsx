@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getMyTeam, getMyTasks } from "@/features/tasks/queries";
 import { CreateTaskForm } from "@/features/tasks/components/CreateTaskForm";
 import { TaskList } from "@/features/tasks/components/TaskList";
+import { DeleteAllButton } from "@/features/tasks/components/DeleteAllButton";
 
 export const metadata = { title: "태스크 목록" };
 
@@ -59,7 +60,7 @@ export default async function TasksPage() {
             {team.name}
             <span className="flame" style={{ display: "inline-block" }}>🔥</span>
           </h1>
-          <div className="flex items-center gap-3 text-xs font-bold" style={{ color: "#92400e" }}>
+          <div className="flex items-center gap-3 text-xs font-bold flex-wrap" style={{ color: "#92400e" }}>
             <span>전체 {tasks.length}개</span>
             <span className="px-2 py-0.5 rounded-full" style={{ background: "#fff3e0", color: "#e65100" }}>
               🔥 진행 {inProgressCount}개
@@ -67,6 +68,7 @@ export default async function TasksPage() {
             <span className="px-2 py-0.5 rounded-full" style={{ background: "#f1f8e9", color: "#558b2f" }}>
               ✅ 완료 {doneCount}개
             </span>
+            {tasks.length > 0 && <DeleteAllButton teamId={team.id} />}
           </div>
         </div>
 

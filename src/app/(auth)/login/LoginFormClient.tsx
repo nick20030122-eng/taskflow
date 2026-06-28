@@ -1,45 +1,30 @@
 "use client";
 
-import { useState, useRef, useTransition } from "react";
+import { useActionState } from "react";
 import { login } from "@/app/actions/auth";
-import { Flash } from "@/components/ui/Flash";
 import { TransitionLink } from "@/components/ui/TransitionLink";
 
+type AuthState = { error?: string };
+
 export function LoginFormClient({ serverError }: { serverError?: string }) {
-  const [flashing, setFlashing] = useState(false);
-  const [, startTransition] = useTransition();
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (flashing || !formRef.current) return;
-
-    const formData = new FormData(formRef.current);
-
-    setFlashing(true);
-
-    setTimeout(() => {
-      startTransition(() => {
-        login(formData);
-      });
-    }, 240);
-  };
+  const [state, action, pending] = useActionState<AuthState, FormData>(
+    login,
+    { error: serverError }
+  );
 
   return (
     <>
-      {flashing && <Flash emoji="⚡" />}
-
-      {serverError && (
+      {state?.error && (
         <div
           className="mb-5 flex items-center gap-2 text-sm px-4 py-3 rounded-2xl"
           style={{ background: "#fff9c4", color: "#c2410c", border: "1px solid #fbbf24" }}
         >
           <span>⚠️</span>
-          <span>{serverError}</span>
+          <span>{state.error}</span>
         </div>
       )}
 
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+      <form action={action} className="space-y-4">
         <div>
           <label
             className="block text-xs font-black mb-1.5 uppercase tracking-wide"
@@ -77,14 +62,14 @@ export function LoginFormClient({ serverError }: { serverError?: string }) {
         </div>
         <button
           type="submit"
-          disabled={flashing}
+          disabled={pending}
           className="w-full py-3.5 rounded-2xl text-sm font-black text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] mt-1 disabled:opacity-70 disabled:cursor-not-allowed"
           style={{
             background: "linear-gradient(135deg, #FFD700 0%, #FFA000 55%, #FF6F00 100%)",
             boxShadow: "0 4px 18px rgba(255,160,0,0.42)",
           }}
         >
-          {flashing ? "⚡ 번개 치는 중…" : "⚡ 번개처럼 로그인 🔥"}
+          {pending ? "⚡ 로그인 중…" : "⚡ 번개처럼 로그인 🔥"}
         </button>
       </form>
 

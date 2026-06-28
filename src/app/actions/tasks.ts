@@ -144,3 +144,49 @@ export async function updateTaskStatus(
   revalidatePath("/tasks");
   return { ok: true, code: "OK" };
 }
+
+export async function deleteTask(
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) redirect("/login");
+
+  const taskId = (formData.get("task_id") as string)?.trim();
+  if (!taskId) return { error: "태스크 정보가 없습니다." };
+
+  const { error } = await supabase
+    .from("tasks")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", taskId)
+    .is("deleted_at", null);
+
+  if (error) return { error: "삭제에 실패했습니다." };
+
+  revalidatePath("/tasks");
+  return { ok: true };
+}
+
+export async function deleteAllTasks(
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) redirect("/login");
+
+  const teamId = (formData.get("team_id") as string)?.trim();
+  if (!teamId) return { error: "팀 정보가 없습니다." };
+
+  const { error } = await supabase
+    .from("tasks")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("team_id", teamId)
+    .is("deleted_at", null);
+
+  if (error) return { error: "전체 삭제에 실패했습니다." };
+
+  revalidatePath("/tasks");
+  return { ok: true };
+}

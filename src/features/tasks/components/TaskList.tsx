@@ -1,5 +1,6 @@
 import type { Task } from "@/types";
 import { StatusSelect } from "./StatusSelect";
+import { DeleteTaskButton } from "./DeleteTaskButton";
 
 const PIKACHU =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png";
@@ -91,6 +92,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
             >
               {p.label}
             </span>
+            <DeleteTaskButton taskId={task.id} />
           </li>
         );
       })}
