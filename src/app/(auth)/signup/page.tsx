@@ -27,6 +27,46 @@ export default async function SignupPage({
     >
       <BgDeco />
 
+      {/* 파이리 말풍선 — 우상단 고정 */}
+      <div
+        className="pk-float"
+        style={{
+          position: "fixed", top: 16, right: 16, zIndex: 30,
+          animationDuration: "2.4s", animationDelay: "0.7s",
+        }}
+      >
+        <TransitionLink href="/" emoji="🔥">
+          <div style={{
+            background: "rgba(255,255,255,0.95)",
+            border: "2px solid #FF7043",
+            borderRadius: 14,
+            padding: "6px 14px",
+            fontSize: "0.78rem", fontWeight: 800,
+            color: "#BF360C",
+            boxShadow: "0 3px 14px rgba(255,87,34,0.3)",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+          }}>
+            🔥 홈으로 돌아가기
+          </div>
+        </TransitionLink>
+        {/* 꼬리 — 왼쪽 아래 (파이리 방향) */}
+        <div style={{
+          position: "absolute", bottom: -9, left: 14,
+          width: 0, height: 0,
+          borderLeft: "7px solid transparent",
+          borderRight: "7px solid transparent",
+          borderTop: "9px solid #FF7043",
+        }} />
+        <div style={{
+          position: "absolute", bottom: -6, left: 14,
+          width: 0, height: 0,
+          borderLeft: "5px solid transparent",
+          borderRight: "5px solid transparent",
+          borderTop: "7px solid rgba(255,255,255,0.95)",
+        }} />
+      </div>
+
       <div className="w-full max-w-sm relative" style={{ zIndex: 10 }}>
         {/* ── 헤더: 파이리 메인, 피카츄 조역 ── */}
         <div className="text-center mb-7">
@@ -72,52 +112,8 @@ export default async function SignupPage({
               </div>
             </div>
 
-            {/* 파이리 — 메인 (크게) + 말풍선 */}
+            {/* 파이리 — 메인 (크게) */}
             <div className="relative">
-              {/* 말풍선 홈 버튼 */}
-              <div
-                className="pk-float absolute"
-                style={{
-                  top: -54, left: "50%", transform: "translateX(-50%)",
-                  animationDuration: "2.3s", animationDelay: "0.9s",
-                  zIndex: 10, whiteSpace: "nowrap",
-                }}
-              >
-                <TransitionLink href="/" emoji="🔥">
-                  <div style={{
-                    background: "rgba(255,255,255,0.96)",
-                    border: "2px solid #FF7043",
-                    borderRadius: 14,
-                    padding: "6px 14px",
-                    fontSize: "0.78rem", fontWeight: 800,
-                    color: "#BF360C",
-                    boxShadow: "0 3px 14px rgba(255,87,34,0.3)",
-                    cursor: "pointer",
-                    letterSpacing: "-0.01em",
-                  }}>
-                    🔥 홈으로 돌아가기
-                  </div>
-                </TransitionLink>
-                {/* 말풍선 꼬리 (테두리) */}
-                <div style={{
-                  position: "absolute", bottom: -9, left: "50%",
-                  transform: "translateX(-50%)",
-                  width: 0, height: 0,
-                  borderLeft: "7px solid transparent",
-                  borderRight: "7px solid transparent",
-                  borderTop: "9px solid #FF7043",
-                }} />
-                {/* 말풍선 꼬리 (흰색 채우기) */}
-                <div style={{
-                  position: "absolute", bottom: -6, left: "50%",
-                  transform: "translateX(-50%)",
-                  width: 0, height: 0,
-                  borderLeft: "5px solid transparent",
-                  borderRight: "5px solid transparent",
-                  borderTop: "7px solid rgba(255,255,255,0.96)",
-                }} />
-              </div>
-
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={CHARMANDER}
