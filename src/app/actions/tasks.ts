@@ -142,6 +142,7 @@ export async function updateTaskStatus(
   await trackServerEvent("task.status_updated", { taskId, toStatus: newStatus }, user.id);
 
   revalidatePath("/tasks");
+  revalidatePath("/today");
   return { ok: true, code: "OK" };
 }
 
@@ -165,6 +166,7 @@ export async function deleteTask(
   if (error) return { error: "삭제에 실패했습니다." };
 
   revalidatePath("/tasks");
+  revalidatePath("/today");
   return { ok: true };
 }
 
@@ -188,5 +190,6 @@ export async function deleteAllTasks(
   if (error) return { error: "전체 삭제에 실패했습니다." };
 
   revalidatePath("/tasks");
+  revalidatePath("/today");
   return { ok: true };
 }

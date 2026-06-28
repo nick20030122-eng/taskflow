@@ -4,6 +4,7 @@ import { getMyTeam, getMyTasks } from "@/features/tasks/queries";
 import { CreateTaskForm } from "@/features/tasks/components/CreateTaskForm";
 import { TaskList } from "@/features/tasks/components/TaskList";
 import { DeleteAllButton } from "@/features/tasks/components/DeleteAllButton";
+import { FilterBar } from "@/features/tasks/components/FilterBar";
 
 export const metadata = { title: "태스크 목록" };
 
@@ -12,7 +13,13 @@ const PIKACHU =
 const CHARMANDER =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png";
 
-export default async function TasksPage() {
+export default async function TasksPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string; priority?: string }>;
+}) {
+  const { status, priority } = await searchParams;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -38,9 +45,10 @@ export default async function TasksPage() {
     );
   }
 
-  const tasks = await getMyTasks(team.id);
-  const doneCount = tasks.filter((t) => t.status === "done").length;
-  const inProgressCount = tasks.filter((t) => t.status === "in_progress").length;
+  const tasks = await getMyTasks(team.id, { status, priority });
+  const allTasks = await getMyTasks(team.id);
+  const doneCount = allTasks.filter((t) => t.status === "done").length;
+  const inProgressCount = allTasks.filter((t) => t.status === "in_progress").length;
 
   return (
     <div className="pk-slide-up">
@@ -61,18 +69,17 @@ export default async function TasksPage() {
             <span className="flame" style={{ display: "inline-block" }}>🔥</span>
           </h1>
           <div className="flex items-center gap-3 text-xs font-bold flex-wrap" style={{ color: "#92400e" }}>
-            <span>전체 {tasks.length}개</span>
+            <span>전체 {allTasks.length}개</span>
             <span className="px-2 py-0.5 rounded-full" style={{ background: "#fff3e0", color: "#e65100" }}>
               🔥 진행 {inProgressCount}개
             </span>
             <span className="px-2 py-0.5 rounded-full" style={{ background: "#f1f8e9", color: "#558b2f" }}>
               ✅ 완료 {doneCount}개
             </span>
-            {tasks.length > 0 && <DeleteAllButton teamId={team.id} />}
+            {allTasks.length > 0 && <DeleteAllButton teamId={team.id} />}
           </div>
         </div>
 
-        {/* 두 포켓몬 — 크게 */}
         <div className="flex items-end gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -103,6 +110,7 @@ export default async function TasksPage() {
       </div>
 
       <CreateTaskForm teamId={team.id} />
+      <FilterBar currentStatus={status} currentPriority={priority} />
       <TaskList tasks={tasks} />
     </div>
   );
