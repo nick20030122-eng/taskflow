@@ -70,16 +70,18 @@ export function CreateTaskForm({ teamId }: { teamId: string }) {
           </button>
         </div>
       </div>
-      {state.ok && (
-        <p className="mt-2 text-xs flex items-center gap-1 pl-1 font-bold" style={{ color: "#558b2f" }}>
-          ✅ 추가됐어요!
-        </p>
-      )}
-      {state.error && (
-        <p className="mt-2 text-xs flex items-center gap-1 pl-1" style={{ color: "#c2410c" }}>
-          <span>⚠️</span> {state.error}
-        </p>
-      )}
+      <div role="status" aria-live="polite" className="min-h-[1.25rem]">
+        {state.ok && (
+          <p className="mt-2 text-xs flex items-center gap-1 pl-1 font-bold" style={{ color: "#558b2f" }}>
+            ✅ 추가됐어요!
+          </p>
+        )}
+        {state.error && (
+          <p className="mt-2 text-xs flex items-center gap-1 pl-1" style={{ color: "#c2410c" }}>
+            <span>⚠️</span> {state.error}
+          </p>
+        )}
+      </div>
     </form>
   );
 }
