@@ -27,25 +27,6 @@ export default async function LoginPage({
     >
       <BgDeco />
 
-      {/* ── 상단 중앙 홈 버튼 ── */}
-      <div style={{ position: "absolute", top: 20, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 20 }}>
-        <TransitionLink
-          href="/"
-          emoji="⚡"
-          style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            padding: "8px 18px", borderRadius: 999,
-            background: "rgba(255,255,255,0.75)", backdropFilter: "blur(8px)",
-            border: "1.5px solid rgba(255,215,0,0.6)",
-            color: "#B8860B", fontSize: "0.82rem", fontWeight: 700,
-            textDecoration: "none", boxShadow: "0 2px 12px rgba(255,193,7,0.22)",
-            transition: "all 0.15s",
-          }}
-        >
-          ← 홈으로 돌아가기
-        </TransitionLink>
-      </div>
-
       <div className="w-full max-w-sm relative" style={{ zIndex: 10 }}>
         {/* ── 헤더: 피카츄 메인, 파이리 조역 ── */}
         <div className="text-center mb-7">
@@ -62,8 +43,52 @@ export default async function LoginPage({
           </div>
 
           <div className="flex items-end justify-center gap-4 mb-4">
-            {/* 피카츄 — 메인 (크게) */}
+            {/* 피카츄 — 메인 (크게) + 말풍선 */}
             <div className="relative">
+              {/* 말풍선 홈 버튼 */}
+              <div
+                className="pk-float absolute"
+                style={{
+                  top: -54, left: "50%", transform: "translateX(-50%)",
+                  animationDuration: "2.1s", animationDelay: "0.7s",
+                  zIndex: 10, whiteSpace: "nowrap",
+                }}
+              >
+                <TransitionLink href="/" emoji="⚡">
+                  <div style={{
+                    background: "rgba(255,255,255,0.96)",
+                    border: "2px solid #FFD700",
+                    borderRadius: 14,
+                    padding: "6px 14px",
+                    fontSize: "0.78rem", fontWeight: 800,
+                    color: "#B8860B",
+                    boxShadow: "0 3px 14px rgba(255,193,7,0.35)",
+                    cursor: "pointer",
+                    letterSpacing: "-0.01em",
+                  }}>
+                    ⚡ 홈으로 돌아가기
+                  </div>
+                </TransitionLink>
+                {/* 말풍선 꼬리 (테두리) */}
+                <div style={{
+                  position: "absolute", bottom: -9, left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 0, height: 0,
+                  borderLeft: "7px solid transparent",
+                  borderRight: "7px solid transparent",
+                  borderTop: "9px solid #FFD700",
+                }} />
+                {/* 말풍선 꼬리 (흰색 채우기) */}
+                <div style={{
+                  position: "absolute", bottom: -6, left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 0, height: 0,
+                  borderLeft: "5px solid transparent",
+                  borderRight: "5px solid transparent",
+                  borderTop: "7px solid rgba(255,255,255,0.96)",
+                }} />
+              </div>
+
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={PIKACHU}
