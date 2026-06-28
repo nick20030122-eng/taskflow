@@ -43,81 +43,75 @@ export default async function LoginPage({
           </div>
 
           <div className="flex items-end justify-center gap-4 mb-4">
-            {/* 피카츄 — 메인 (크게) + 말풍선 */}
-            <div className="relative">
-              {/*
-                말풍선: 외부 div(정적 위치) + 내부 div(pk-float 애니메이션만)
-                분리 이유: pk-float의 transform:translateY와
-                중앙 정렬용 transform:translateX(-50%)가 같은 요소에 있으면
-                CSS 애니메이션이 translateX를 덮어써 옆으로 흘림
-              */}
-              <div style={{
-                position: "absolute",
-                bottom: "100%", marginBottom: 10,
-                left: "50%", transform: "translateX(-50%)",
-                zIndex: 20,
-              }}>
-                <div
-                  className="pk-float"
-                  style={{ position: "relative", animationDuration: "2.0s", animationDelay: "0.9s" }}
-                >
-                  <TransitionLink href="/" emoji="⚡">
-                    <div style={{
-                      background: "rgba(255,255,255,0.96)",
-                      border: "2px solid #FFD700",
-                      borderRadius: 14,
-                      padding: "6px 14px",
-                      fontSize: "0.78rem", fontWeight: 800,
-                      color: "#B8860B",
-                      boxShadow: "0 3px 14px rgba(255,193,7,0.35)",
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                    }}>
-                      ⚡ 홈으로 돌아가기
-                    </div>
-                  </TransitionLink>
-                  {/* 꼬리 — marginLeft로 중앙 정렬 (transform 사용 안 함) */}
-                  <div style={{
-                    position: "absolute", bottom: -9,
-                    left: "50%", marginLeft: -7,
-                    width: 0, height: 0,
-                    borderLeft: "7px solid transparent",
-                    borderRight: "7px solid transparent",
-                    borderTop: "9px solid #FFD700",
-                  }} />
-                  <div style={{
-                    position: "absolute", bottom: -6,
-                    left: "50%", marginLeft: -5,
-                    width: 0, height: 0,
-                    borderLeft: "5px solid transparent",
-                    borderRight: "5px solid transparent",
-                    borderTop: "7px solid rgba(255,255,255,0.96)",
-                  }} />
-                </div>
-              </div>
-
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={PIKACHU}
-                alt="피카츄"
-                width={140}
-                height={140}
-                className="pk-float drop-shadow-2xl"
+            {/* 피카츄 — 메인 + 말풍선 (컬럼 흐름: 말풍선 → 피카츄) */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              {/* 말풍선: in-flow 배치, absolute 없음 → form card와 z-index 충돌 없음 */}
+              <div
+                className="pk-float"
                 style={{
-                  animationDuration: "2.6s",
-                  filter: "drop-shadow(0 10px 28px rgba(255,215,0,0.65))",
-                }}
-              />
-              {/* 번개 후광 */}
-              <span
-                className="absolute pk-float"
-                style={{
-                  top: -8, right: -10, fontSize: "1.8rem",
-                  animationDuration: "1.5s", filter: "drop-shadow(0 0 8px #FFD700)",
+                  position: "relative",
+                  marginBottom: 4,
+                  animationDuration: "2.0s",
+                  animationDelay: "0.9s",
                 }}
               >
-                ⚡
-              </span>
+                <TransitionLink href="/" emoji="⚡">
+                  <div style={{
+                    background: "rgba(255,255,255,0.96)",
+                    border: "2px solid #FFD700",
+                    borderRadius: 14,
+                    padding: "6px 14px",
+                    fontSize: "0.78rem", fontWeight: 800,
+                    color: "#B8860B",
+                    boxShadow: "0 3px 14px rgba(255,193,7,0.35)",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}>
+                    ⚡ 홈으로 돌아가기
+                  </div>
+                </TransitionLink>
+                {/* 꼬리 — 피카츄 방향(아래) */}
+                <div style={{
+                  position: "absolute", bottom: -9,
+                  left: "50%", marginLeft: -7,
+                  width: 0, height: 0,
+                  borderLeft: "7px solid transparent",
+                  borderRight: "7px solid transparent",
+                  borderTop: "9px solid #FFD700",
+                }} />
+                <div style={{
+                  position: "absolute", bottom: -6,
+                  left: "50%", marginLeft: -5,
+                  width: 0, height: 0,
+                  borderLeft: "5px solid transparent",
+                  borderRight: "5px solid transparent",
+                  borderTop: "7px solid rgba(255,255,255,0.96)",
+                }} />
+              </div>
+
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={PIKACHU}
+                  alt="피카츄"
+                  width={140}
+                  height={140}
+                  className="pk-float drop-shadow-2xl"
+                  style={{
+                    animationDuration: "2.6s",
+                    filter: "drop-shadow(0 10px 28px rgba(255,215,0,0.65))",
+                  }}
+                />
+                <span
+                  className="absolute pk-float"
+                  style={{
+                    top: -8, right: -10, fontSize: "1.8rem",
+                    animationDuration: "1.5s", filter: "drop-shadow(0 0 8px #FFD700)",
+                  }}
+                >
+                  ⚡
+                </span>
+              </div>
             </div>
 
             {/* 중앙 텍스트 */}
