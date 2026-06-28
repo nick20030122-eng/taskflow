@@ -27,46 +27,6 @@ export default async function LoginPage({
     >
       <BgDeco />
 
-      {/* 피카츄 말풍선 — 좌상단 고정 */}
-      <div
-        className="pk-float"
-        style={{
-          position: "fixed", top: 16, left: 16, zIndex: 30,
-          animationDuration: "2.2s", animationDelay: "0.5s",
-        }}
-      >
-        <TransitionLink href="/" emoji="⚡">
-          <div style={{
-            background: "rgba(255,255,255,0.95)",
-            border: "2px solid #FFD700",
-            borderRadius: 14,
-            padding: "6px 14px",
-            fontSize: "0.78rem", fontWeight: 800,
-            color: "#B8860B",
-            boxShadow: "0 3px 14px rgba(255,193,7,0.35)",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
-          }}>
-            ⚡ 홈으로 돌아가기
-          </div>
-        </TransitionLink>
-        {/* 꼬리 — 오른쪽 아래 (피카츄 방향) */}
-        <div style={{
-          position: "absolute", bottom: -9, right: 14,
-          width: 0, height: 0,
-          borderLeft: "7px solid transparent",
-          borderRight: "7px solid transparent",
-          borderTop: "9px solid #FFD700",
-        }} />
-        <div style={{
-          position: "absolute", bottom: -6, right: 14,
-          width: 0, height: 0,
-          borderLeft: "5px solid transparent",
-          borderRight: "5px solid transparent",
-          borderTop: "7px solid rgba(255,255,255,0.95)",
-        }} />
-      </div>
-
       <div className="w-full max-w-sm relative" style={{ zIndex: 10 }}>
         {/* ── 헤더: 피카츄 메인, 파이리 조역 ── */}
         <div className="text-center mb-7">
@@ -83,8 +43,59 @@ export default async function LoginPage({
           </div>
 
           <div className="flex items-end justify-center gap-4 mb-4">
-            {/* 피카츄 — 메인 (크게) */}
+            {/* 피카츄 — 메인 (크게) + 말풍선 */}
             <div className="relative">
+              {/*
+                말풍선: 외부 div(정적 위치) + 내부 div(pk-float 애니메이션만)
+                분리 이유: pk-float의 transform:translateY와
+                중앙 정렬용 transform:translateX(-50%)가 같은 요소에 있으면
+                CSS 애니메이션이 translateX를 덮어써 옆으로 흘림
+              */}
+              <div style={{
+                position: "absolute",
+                bottom: "100%", marginBottom: 10,
+                left: "50%", transform: "translateX(-50%)",
+                zIndex: 20,
+              }}>
+                <div
+                  className="pk-float"
+                  style={{ position: "relative", animationDuration: "2.0s", animationDelay: "0.9s" }}
+                >
+                  <TransitionLink href="/" emoji="⚡">
+                    <div style={{
+                      background: "rgba(255,255,255,0.96)",
+                      border: "2px solid #FFD700",
+                      borderRadius: 14,
+                      padding: "6px 14px",
+                      fontSize: "0.78rem", fontWeight: 800,
+                      color: "#B8860B",
+                      boxShadow: "0 3px 14px rgba(255,193,7,0.35)",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}>
+                      ⚡ 홈으로 돌아가기
+                    </div>
+                  </TransitionLink>
+                  {/* 꼬리 — marginLeft로 중앙 정렬 (transform 사용 안 함) */}
+                  <div style={{
+                    position: "absolute", bottom: -9,
+                    left: "50%", marginLeft: -7,
+                    width: 0, height: 0,
+                    borderLeft: "7px solid transparent",
+                    borderRight: "7px solid transparent",
+                    borderTop: "9px solid #FFD700",
+                  }} />
+                  <div style={{
+                    position: "absolute", bottom: -6,
+                    left: "50%", marginLeft: -5,
+                    width: 0, height: 0,
+                    borderLeft: "5px solid transparent",
+                    borderRight: "5px solid transparent",
+                    borderTop: "7px solid rgba(255,255,255,0.96)",
+                  }} />
+                </div>
+              </div>
+
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={PIKACHU}
