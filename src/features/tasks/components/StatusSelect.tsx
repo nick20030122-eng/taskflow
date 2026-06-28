@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { updateTaskStatus, type StatusActionState } from "@/app/actions/tasks";
 import type { Status } from "@/types";
 
@@ -21,14 +21,20 @@ const STATUS_STYLE: Record<Status, { bg: string; color: string; border: string }
 export function StatusSelect({
   taskId,
   currentStatus,
+  onPendingChange,
 }: {
   taskId: string;
   currentStatus: Status;
+  onPendingChange?: (pending: boolean) => void;
 }) {
   const [state, action, pending] = useActionState<StatusActionState, FormData>(
     updateTaskStatus,
     { ok: true, code: "" }
   );
+
+  useEffect(() => {
+    onPendingChange?.(pending);
+  }, [pending, onPendingChange]);
 
   const isArchived = currentStatus === "archived";
   const style = STATUS_STYLE[currentStatus] ?? STATUS_STYLE.todo;
@@ -36,24 +42,31 @@ export function StatusSelect({
   return (
     <form key={currentStatus} action={action}>
       <input type="hidden" name="task_id" value={taskId} />
-      <select
-        name="status"
-        defaultValue={currentStatus}
-        onChange={(e) => e.currentTarget.form?.requestSubmit()}
-        disabled={pending || isArchived}
-        className="text-xs font-bold px-2.5 py-1.5 rounded-xl focus:outline-none cursor-pointer transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-        style={{
-          background: style.bg,
-          color: style.color,
-          border: `2px solid ${style.border}`,
-        }}
-      >
-        {STATUS_OPTIONS.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <select
+          name="status"
+          defaultValue={currentStatus}
+          onChange={(e) => e.currentTarget.form?.requestSubmit()}
+          disabled={pending || isArchived}
+          className="text-xs font-bold px-2.5 py-1.5 rounded-xl focus:outline-none cursor-pointer disabled:cursor-not-allowed"
+          style={{
+            background: style.bg,
+            color: style.color,
+            border: `2px solid ${pending ? "#fbbf24" : style.border}`,
+            opacity: pending ? 0.6 : 1,
+            transition: "opacity 0.2s, border-color 0.2s",
+          }}
+        >
+          {STATUS_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        {pending && (
+          <span className="pk-spin" style={{ fontSize: "0.8rem", color: "#f59e0b" }}>⚡</span>
+        )}
+      </div>
       {state?.error && (
         <p className="text-xs mt-1" style={{ color: "#c2410c" }}>
           ⚠️ {state.error}

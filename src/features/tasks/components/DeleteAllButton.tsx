@@ -29,10 +29,15 @@ export function DeleteAllButton({ teamId }: { teamId: string }) {
         <button
           type="submit"
           disabled={pending}
-          className="text-xs font-black px-3 py-1.5 rounded-xl text-white transition-all hover:scale-105 disabled:opacity-50"
+          className="text-xs font-black px-3 py-1.5 rounded-xl text-white transition-all hover:scale-105 disabled:opacity-50 flex items-center gap-1.5"
           style={{ background: "linear-gradient(135deg, #ef4444, #b91c1c)" }}
         >
-          {pending ? "삭제 중…" : "삭제"}
+          {pending ? (
+            <>
+              <span className="pk-spin" style={{ display: "inline-block", fontSize: "0.75rem" }}>🗑</span>
+              삭제 중…
+            </>
+          ) : "삭제"}
         </button>
       </form>
       <button

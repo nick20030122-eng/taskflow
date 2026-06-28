@@ -1,18 +1,10 @@
 import type { Task } from "@/types";
-import { StatusSelect } from "./StatusSelect";
-import { DeleteTaskButton } from "./DeleteTaskButton";
+import { TaskRow } from "./TaskRow";
 
 const PIKACHU =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png";
 const CHARMANDER =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png";
-
-const PRIORITY_CONFIG: Record<string, { label: string; bg: string; text: string; border: string }> = {
-  urgent: { label: "🔥🔥 긴급", bg: "#fff3e0", text: "#e65100",  border: "#ff8a65" },
-  high:   { label: "🔥 높음",   bg: "#fff8f0", text: "#f57c00",  border: "#ffb74d" },
-  normal: { label: "⚡ 보통",   bg: "#fffde7", text: "#b45309",  border: "#fbbf24" },
-  low:    { label: "💤 낮음",   bg: "#f5f5f5", text: "#9e9e9e",  border: "#e0e0e0" },
-};
 
 export function TaskList({ tasks }: { tasks: Task[] }) {
   if (!tasks.length) {
@@ -56,46 +48,9 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
 
   return (
     <ul className="space-y-2.5">
-      {tasks.map((task) => {
-        const p = PRIORITY_CONFIG[task.priority] ?? PRIORITY_CONFIG.normal;
-        const isDone = task.status === "done" || task.status === "archived";
-        const isUrgent = task.priority === "urgent";
-        const isNormal = task.priority === "normal";
-
-        return (
-          <li
-            key={task.id}
-            className="flex items-center gap-3 p-3.5 rounded-2xl border transition-shadow hover:shadow-md"
-            style={{
-              background: "rgba(255,255,255,0.75)",
-              borderColor: p.border,
-              boxShadow: "0 1px 8px rgba(255,180,50,0.08)",
-              backdropFilter: "blur(4px)",
-            }}
-          >
-            {isUrgent && (
-              <span className="flame text-base" style={{ flexShrink: 0 }}>🔥</span>
-            )}
-            {isNormal && (
-              <span className="pk-float text-base" style={{ flexShrink: 0, animationDuration: "2s" }}>⚡</span>
-            )}
-            <StatusSelect taskId={task.id} currentStatus={task.status} />
-            <span
-              className={`flex-1 text-sm font-medium ${isDone ? "line-through opacity-40" : ""}`}
-              style={{ color: "#3e2723" }}
-            >
-              {task.title}
-            </span>
-            <span
-              className="text-xs font-bold px-2.5 py-1 rounded-full"
-              style={{ background: p.bg, color: p.text, border: `1.5px solid ${p.border}` }}
-            >
-              {p.label}
-            </span>
-            <DeleteTaskButton taskId={task.id} />
-          </li>
-        );
-      })}
+      {tasks.map((task) => (
+        <TaskRow key={task.id} task={task} />
+      ))}
     </ul>
   );
 }

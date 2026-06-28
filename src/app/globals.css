@@ -88,6 +88,13 @@ body {
   100% { opacity: 0; transform: scale(0.5) translateY(-70px); }
 }
 
+/* ── 액션 피드백 ── */
+@keyframes pk-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.pk-spin { animation: pk-spin 0.65s linear infinite; display: inline-block; }
+
 /* ── 배경 드리프트 ── */
 @keyframes pk-bg-drift {
   0%,100% { transform: translateY(0) rotate(0deg) scale(1); }
