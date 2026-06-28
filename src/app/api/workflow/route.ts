@@ -8,10 +8,10 @@ export async function POST(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!user) return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
 
   const body = (await request.json()) as { query?: string };
-  if (!body.query) return NextResponse.json({ error: "query is required" }, { status: 400 });
+  if (!body.query) return NextResponse.json({ error: "검색 쿼리를 입력해주세요." }, { status: 400 });
 
   const steps = [searchStep, summarizeStep, reportStep, notifyStep];
   const { results, finalOutput } = await runWorkflow(steps, { query: body.query });
