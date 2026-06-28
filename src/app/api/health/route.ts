@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 
 export async function GET(): Promise<NextResponse> {
   const envChecks: Record<string, boolean> = {
@@ -11,7 +11,10 @@ export async function GET(): Promise<NextResponse> {
 
   let supabase_connection = false;
   try {
-    const supabase = await createClient();
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
     const { error } = await supabase.from("teams").select("id").limit(1);
     supabase_connection = !error;
   } catch {
