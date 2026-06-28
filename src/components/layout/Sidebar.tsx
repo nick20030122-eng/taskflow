@@ -9,7 +9,7 @@ import { Flash } from "@/components/ui/Flash";
 const NAV_ITEMS = [
   { href: "/tasks", icon: "🔥", label: "태스크 목록", emoji: "🔥" as const, soon: false },
   { href: "/today", icon: "⚡", label: "오늘 할 일",  emoji: "⚡" as const, soon: false },
-  { href: "/team",  icon: "👥", label: "팀 관리",     emoji: "⚡" as const, soon: true  },
+  { href: "/team",  icon: "👥", label: "팀 관리",     emoji: "⚡" as const, soon: false },
 ];
 
 export function Sidebar({ email }: { email: string }) {
