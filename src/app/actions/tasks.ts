@@ -3,9 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { logEvent } from "@/lib/admin/log";
 import type { Status } from "@/types";
 
-type ActionState = { error?: string };
+type ActionState = { ok?: boolean; error?: string };
 
 export type StatusActionState = {
   ok: boolean;
@@ -46,11 +47,16 @@ export async function createTask(
     created_by: user.id,
   });
 
-  if (error) return { error: "태스크 생성에 실패했습니다." };
+  if (error) {
+    await logEvent("task_create_error", { code: "DB-500" }, user.id);
+    return { error: "태스크 생성에 실패했습니다." };
+  }
+
+  await logEvent("task_created", { title }, user.id);
 
   // 4. 캐시 무효화
   revalidatePath("/tasks");
-  return {};
+  return { ok: true };
 }
 
 export async function updateTaskStatus(
@@ -130,6 +136,8 @@ export async function updateTaskStatus(
   if (!updated) {
     return { ok: false, code: "TASK-404", error: "태스크를 찾을 수 없습니다." };
   }
+
+  await logEvent("task_status_updated", { taskId, status: newStatus }, user.id);
 
   revalidatePath("/tasks");
   return { ok: true, code: "OK" };

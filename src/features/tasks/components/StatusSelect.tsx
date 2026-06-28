@@ -12,10 +12,10 @@ const STATUS_OPTIONS: { value: Status; label: string }[] = [
 ];
 
 const STATUS_STYLE: Record<Status, { bg: string; color: string; border: string }> = {
-  todo:        { bg: "#fff8f0", color: "#ff6d00", border: "#ffcc80" },
-  in_progress: { bg: "#fff3e0", color: "#e65100", border: "#ff8a65" },
-  done:        { bg: "#f1f8e9", color: "#558b2f", border: "#aed581" },
-  archived:    { bg: "#f5f5f5", color: "#9e9e9e", border: "#e0e0e0" },
+  todo:        { bg: "#fffde7", color: "#b45309",  border: "#fbbf24" },
+  in_progress: { bg: "#fff3e0", color: "#e65100",  border: "#ff8a65" },
+  done:        { bg: "#f1f8e9", color: "#558b2f",  border: "#aed581" },
+  archived:    { bg: "#f5f5f5", color: "#9e9e9e",  border: "#e0e0e0" },
 };
 
 export function StatusSelect({
@@ -55,7 +55,7 @@ export function StatusSelect({
         ))}
       </select>
       {state?.error && (
-        <p className="text-xs mt-1" style={{ color: "#e65100" }}>
+        <p className="text-xs mt-1" style={{ color: "#c2410c" }}>
           ⚠️ {state.error}
         </p>
       )}
